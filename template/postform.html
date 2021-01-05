@@ -1,0 +1,14 @@
+{% extends 'base.html'%}
+{% load crispy_forms_tags %}
+{% block title %}PostForm{% endblock %}
+{% block content %}
+<div class="form_page">
+<form method="POST" enctype="multipart/form-data" class="reg_form">{% csrf_token%}
+{{form|crispy}}
+{{imageform|crispy}}
+<br>
+<button type="submit" class="btn btn-outline-success">Save</button>
+</form>
+</div>
+
+{% endblock %}

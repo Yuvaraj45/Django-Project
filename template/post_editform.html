@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="form_page">
+<form method="POST" enctype="multipart/form-data" class="form">{% csrf_token %}
+	{{form|crispy}}
+	{{imageform|crispy}}
+	<br>
+	<a href="{% url 'blog:post_detail' post.slug %}">
+		<button type="button" class="btn btn-secondary">
+			Cancel
+		</button>
+	</a>
+	<button type="submit" class="btn btn-success">Update</button>
+</form> 
+</div>
+{% endblock %}

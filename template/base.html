@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+	<title>{% block title%}{% endblock %}</title>
+
+ <link rel="stylesheet" type="text/css" href="{% static 'post/style1.css' %}">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script src="https://kit.fontawesome.com/ff490db21a.js" crossorigin="anonymous"></script>
+
+
+
+</head>
+<body>
+{% include 'navbar.html' %}
+{% include 'messages.html' %}
+{% block content %}
+{% endblock %}
+<script type="text/javascript">
+	$(document).ready(function(event){
+		$(function(){
+		setTimeout(function(){$('.alert').slideUp(2000);},5000);
+		});
+
+		$('.reply-btn').click(function(){
+		$(this).parent().parent().next('.replied-comments').fadeToggle()
+		});
+
+		$(document).on('click','#delete',function(event){
+			return confirm("Are You Sure You Want To Delete This Post ?")
+		});
+
+		});
+
+		$(document).on('click','#like',function(event){
+			event.preventDefault();
+			var id = $(this).attr('value');
+			console.log(id);
+			$.ajax({
+				type : 'POST',
+				url : '{% url "blog:post_likes" %}',
+				data : {'id':id,'csrfmiddlewaretoken':'{{csrf_token}}'},
+				dataType : 'json',
+				success : function(response){
+					$('#like-section').html(response['form'])
+					console.log($('#like-section').html(response['form']));
+				},
+				error : function(rs ,e){
+					console.log(rs.responseText);
+				},
+			});
+		});
+
+		$(document).on('submit','.comment-form',function(event){
+			event.preventDefault();
+			$.ajax({
+				type : 'POST',
+				url : $(this).attr('action'),
+				data : $(this).serialize(),
+				dataType:'json',
+				success : function(response){
+					$('.main-comments').html(response['form']);
+					$('textarea').val('');
+					$('.reply-btn').click(function(){
+					$(this).parent().parent().next('.replied-comments').fadeToggle()
+					$('textarea').val('');
+				});
+				},
+				error:function(rs,e){
+					console.log(rs.responseText);
+				},
+			});
+		});
+
+
+		$(document).on('submit','.reply-form',function(event){
+			event.preventDefault();
+			$.ajax({
+				type : 'POST',
+				url : $(this).attr('action'),
+				data : $(this).serialize(),
+				dataType:'json',
+				success : function(response){
+					$('.main-comments').html(response['form']);
+					$('textarea').val('');
+					$('.reply-btn').click(function(){
+					$(this).parent().parent().next('.replied-comments').fadeToggle()
+					$('textarea').val('');
+				});
+				},
+				error:function(rs,e){
+					console.log(rs.responseText);
+				},
+			});
+		});
+		
+</script>
+{% include 'footer.html' %}
+</body>
+</html>

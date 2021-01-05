@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load socialaccount %}
+
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col-md-6 offset-md-3">
+			<form method="POST">{% csrf_token %}
+				{{form|crispy}}<br>
+				<a href="{% url 'blog:user_registrationform' %}" class="btn btn-outline-success"> Register </a> |
+				<input type="submit" value="Login" class="btn btn-outline-success">
+			</form><br>
+			<--- OR ---><br>
+			<a href="#">
+				<button class="btn btn-primary">Github</button>
+			</a>
+			<a href="{% provider_login_url 'google' %}">
+				<button class="btn btn-danger">Google+</button>
+			</a>
+			
+		</div>
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'blog:post_list' %}">Yuvi's Blog</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <form class="d-flex" action="{% url 'blog:post_list' %}">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name='q'>
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+      </ul>
+      <ul class="navbar-nav">
+        {% if request.user.is_authenticated %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {% if request.user.profile.photo %}
+                <img src="{{request.user.profile.photo.url}}" class="nav-img">
+              {% else %}
+                  <img src="/media/download.png" class="nav-img">
+              {% endif %}
+              <span>Hi {{request.user|capfirst}}</span>
+            </a>
+            <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="{% url 'blog:user_profile' %}">My Profile</a></li>
+              <li><a class="dropdown-item" href="{% url 'blog:post_form' %}">Create Post</a></li>
+              <li><a class="dropdown-item" href="{% url 'blog:fav_list' %}">Favourites</a></li>
+              <li><a class="dropdown-item" href="{% url 'blog:user_logout' %}">Logout</a></li>
+            </ul>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a href="{% url 'blog:user_login' %}" class="nav-link">Login</a>
+          </li>
+        {% endif %} 
+      </ul>
+    </div>
+  </div>
+</nav>

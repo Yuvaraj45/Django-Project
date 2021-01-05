@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container-fluid">
+	<div class="row">
+		{% for i in user_fav %}
+		<div class="col-md-6">
+			<div class="img-thumbnail">
+				<a href="{{i.get_absolute_url}}">{{i.title}}</a> 
+				<i style="color: #EB984E;">{% if i.status == 'draft' %}[{{i.status}}]{% endif %}</i>
+				<small style="float: right;">{{i.created}}</small><br>
+				<p>Author: <i>{{i.author}}</i></p>
+				{{i.description}}
+			</div>
+			<br>
+		</div>
+		{% empty %}
+			<div class="container-fluid">
+				<h3 style="text-align: center;">"No favourite post found "</h3> 
+			</div>
+		{% endfor %}
+</div>
+</div>
+{% endblock %}

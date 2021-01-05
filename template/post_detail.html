@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container">
+	<h3>{{instance.title}}</h3>
+	{% if is_fav %}<a href="{% url 'blog:post_favourite' instance.slug %}"><i class="fas fa-heart fa-lg" style="float: right;"></i></a>
+	{% else %}
+	<a href="{% url 'blog:post_favourite' instance.slug %}"><i class="far fa-heart fa-lg" style="float: right;"></i></a>
+	{% endif %}
+	<br>
+	<p>{{instance.description}}</p>
+	<div class="row gallery">
+		{% for p in instance.images_set.all %}
+		{% if p.image != 'False' %}
+			<div class="col-md-3">
+				<img src="{{p.image.url}}" alt="Image Not Shown" class="img-thumbnail">
+			</div>
+		{% endif %}
+		{% endfor %}
+	</div>
+	{% if instance.author == request.user %}
+	<div class="section-1" style="float: right;">
+		<form action="{% url 'blog:post_editform' instance.slug %}">
+		<button class="btn btn-outline-primary">
+			Edit
+		</button>
+		<a href="{% url 'blog:post_delete' instance.slug %}" id="delete">
+			<button type="button" class="btn btn-outline-danger">
+				Delete
+			</button>
+		</a>
+		</form>
+	</div>
+	{% endif %}
+
+<div id="like-section">
+	{% include 'like_section.html' %}
+</div>
+<br><br>
+<hr>
+{% if not instance.restrict_comments %}
+<div class="main-comments">
+{% include 'comments.html' %}
+</div>
+{% endif %}
+</div>
+{% endblock %}

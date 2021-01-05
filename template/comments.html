@@ -1,0 +1,33 @@
+{% load crispy_forms_tags %}
+<form method="POST" class="comment-form" action=".">
+	{% csrf_token %}
+	{{form|crispy}}
+	<input type="submit" class="btn btn-outline-success">
+</form><br>
+
+<h3>Comments</h3>
+{{comments.count}} comment{{comments|pluralize}}
+{% for comment in comments %}
+<blockquote class="blockquote">
+	<p><small><b>{{comment.content}}</b> <i style="color: #BDC3C7; font-size: 14px;">{{comment.replies.all.count}} repl{% if comment.replies.all.count > 0 %}ies{% else %}y{% endif %}</i></small>&nbsp;<button type="button" class="reply-btn btn btn-outline-secondary btn-sm ml-2">Reply</button></p>
+	<footer class="blockquote-footer"><small><cite class="Source Title">{{comment.user|capfirst}} | <i style="font-size: 14px;">{{comment.timestamp}}</i></cite></small>
+	</footer>
+</blockquote>
+
+<div class="replied-comments container ml-4" style="display: none;">
+	{% for reply in comment.replies.all %}
+		<blockquote class="blockquote">
+		<p><small>>{{reply.content}}</small></p>
+		<footer class="blockquote-footer"><cite class="Source Title"><small>{{reply.user|capfirst}} | {{reply.timestamp}}</small></cite></footer>
+	</blockquote>
+	{% endfor %}
+
+	<form method="POST" class="reply-form" action=".">
+		{% csrf_token %}
+		{{form|crispy}}
+		<input type="hidden" name="comment_id" value="{{comment.id}}">
+		<input type="submit" class="btn btn-outline-success" >
+	</form>
+</div>
+
+{% endfor %}

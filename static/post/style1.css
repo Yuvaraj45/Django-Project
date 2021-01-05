@@ -1,0 +1,52 @@
+html, body {
+  height: 100%;
+}
+body {
+  display: flex;
+  flex-direction: column;
+}
+.container,.container-fluid {
+  flex: 1 0 auto;
+}
+.footer {
+  flex-shrink: 0;
+}
+
+.container .container-fluid{
+	min-height: 100%;
+	margin-bottom: -50px;
+}
+
+a{
+	font-family: Finchley;
+}
+
+img.nav-img{
+	height: 40px;
+	width: 35px;
+}
+
+.gallery{
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.gallery .img-thumbnail{
+	height: 250px;
+	width: 300px;
+
+}
+
+.form_page{
+	margin-left: 30%;
+}
+
+.form_page input[type=text], select {
+  width: 50%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
